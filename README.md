@@ -22,6 +22,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 * OPTIGA™ Trust M advanced security controller for secure data storage
 * Thermistor for sensing the ambient temperature
 * 16KB of Emulated EEPROM
+* Feather compatible pin header
 * Dedicated SDHC to interface with WICED wireless devices.
 * Delivers dual-cores, with a 150-MHz Arm Cortex-M4 as the primary application processor and a 100-MHz Arm Cortex-M0+ as the secondary processor for low-power operations.
 * Supports Full-Speed USB, a Quad-SPI interface, 13 serial communication blocks, 7 programmable analog blocks, and 56 programmable digital blocks.
@@ -36,18 +37,19 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 The BSP has a few hooks that allow its behavior to be configured. Some of these items are enabled by default while others must be explicitly enabled. Items enabled by default are specified in the CYSBSYSKIT-DEV-01.mk file. The items that are enabled can be changed by creating a custom BSP or by editing the application makefile.
 
 Components:
-    * Device specific HAL reference (e.g.: PSOC6HAL) - This component, enabled by default, pulls in the version of the HAL that is applicable for this board.
-    * BSP_DESIGN_MODUS - This component, enabled by default, causes the Configurator generated code for this specific BSP to be included. This should not be used at the same time as the CUSTOM_DESIGN_MODUS component.
-    * CUSTOM_DESIGN_MODUS - This component, disabled by default, causes the Configurator generated code from the application to be included. This assumes that the application provides configurator generated code. This should not be used at the same time as the BSP_DESIGN_MODUS component.
+* Device specific category reference (e.g.: CAT1) - This component, enabled by default, pulls in any device specific code for this board.
+* BSP_DESIGN_MODUS - This component, enabled by default, causes the Configurator generated code for this specific BSP to be included. This should not be used at the same time as the CUSTOM_DESIGN_MODUS component.
+* CUSTOM_DESIGN_MODUS - This component, disabled by default, causes the Configurator generated code from the application to be included. This assumes that the application provides configurator generated code. This should not be used at the same time as the BSP_DESIGN_MODUS component.
 
 Defines:
-    * CYBSP_WIFI_CAPABLE - This define, disabled by default, causes the BSP to initialize the interface to an onboard wireless chip.
-    * CY_USING_HAL - This define, enabled by default, specifies that the HAL is intended to be used by the application. This will cause the BSP to include the applicable header file and to initialize the system level drivers.
+* CYBSP_WIFI_CAPABLE - This define, disabled by default, causes the BSP to initialize the interface to an onboard wireless chip if it has one.
+* CY_USING_HAL - This define, enabled by default, specifies that the HAL is intended to be used by the application. This will cause the BSP to include the applicable header file and to initialize the system level drivers.
 
 ### Clock Configuration
 
 | Clock    | Source    | Output Frequency |
 |----------|-----------|------------------|
+| FLL      | IMO       | 100.0 MHz        |
 | PLL      | IMO       | 48.0 MHz         |
 | CLK_HF0  | CLK_PATH0 | 100 MHz          |
 | CLK_HF2  | CLK_PATH0 | 100 MHz          |
@@ -58,6 +60,8 @@ Defines:
 * System Idle Power Mode: Deep Sleep
 * VDDA Voltage: 3300 mV
 * VDDD Voltage: 1800 mV
+
+See the [BSP Setttings][settings] for additional board specific configuration settings.
 
 ## API Reference Manual
 
@@ -73,6 +77,7 @@ See the [BSP API Reference Manual][api] for the complete list of the provided in
 * [ModusToolbox](https://www.cypress.com/products/modustoolbox-software-environment)
 
 [api]: https://cypresssemiconductorco.github.io/TARGET_CYSBSYSKIT-DEV-01/html/modules.html
+[settings]: https://cypresssemiconductorco.github.io/TARGET_CYSBSYSKIT-DEV-01/html/md_bsp_settings.html
 
 ---
-© Cypress Semiconductor Corporation, 2019-2020.
+© Cypress Semiconductor Corporation, 2019-2021.

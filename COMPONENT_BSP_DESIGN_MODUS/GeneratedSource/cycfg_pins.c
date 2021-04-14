@@ -10,7 +10,7 @@
 * udd 3.0.0.562
 *
 ********************************************************************************
-* Copyright 2020 Cypress Semiconductor Corporation
+* Copyright 2021 Cypress Semiconductor Corporation
 * SPDX-License-Identifier: Apache-2.0
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,54 @@
 
 #include "cycfg_pins.h"
 
+const cy_stc_gpio_pin_config_t CYBSP_WCO_IN_config = 
+{
+	.outVal = 1,
+	.driveMode = CY_GPIO_DM_ANALOG,
+	.hsiom = CYBSP_WCO_IN_HSIOM,
+	.intEdge = CY_GPIO_INTR_DISABLE,
+	.intMask = 0UL,
+	.vtrip = CY_GPIO_VTRIP_CMOS,
+	.slewRate = CY_GPIO_SLEW_FAST,
+	.driveSel = CY_GPIO_DRIVE_1_2,
+	.vregEn = 0UL,
+	.ibufMode = 0UL,
+	.vtripSel = 0UL,
+	.vrefSel = 0UL,
+	.vohSel = 0UL,
+};
+#if defined (CY_USING_HAL)
+	const cyhal_resource_inst_t CYBSP_WCO_IN_obj = 
+	{
+		.type = CYHAL_RSC_GPIO,
+		.block_num = CYBSP_WCO_IN_PORT_NUM,
+		.channel_num = CYBSP_WCO_IN_PIN,
+	};
+#endif //defined (CY_USING_HAL)
+const cy_stc_gpio_pin_config_t CYBSP_WCO_OUT_config = 
+{
+	.outVal = 1,
+	.driveMode = CY_GPIO_DM_ANALOG,
+	.hsiom = CYBSP_WCO_OUT_HSIOM,
+	.intEdge = CY_GPIO_INTR_DISABLE,
+	.intMask = 0UL,
+	.vtrip = CY_GPIO_VTRIP_CMOS,
+	.slewRate = CY_GPIO_SLEW_FAST,
+	.driveSel = CY_GPIO_DRIVE_1_2,
+	.vregEn = 0UL,
+	.ibufMode = 0UL,
+	.vtripSel = 0UL,
+	.vrefSel = 0UL,
+	.vohSel = 0UL,
+};
+#if defined (CY_USING_HAL)
+	const cyhal_resource_inst_t CYBSP_WCO_OUT_obj = 
+	{
+		.type = CYHAL_RSC_GPIO,
+		.block_num = CYBSP_WCO_OUT_PORT_NUM,
+		.channel_num = CYBSP_WCO_OUT_PIN,
+	};
+#endif //defined (CY_USING_HAL)
 const cy_stc_gpio_pin_config_t CYBSP_SWDIO_config = 
 {
 	.outVal = 1,
@@ -80,6 +128,16 @@ const cy_stc_gpio_pin_config_t CYBSP_SWDCK_config =
 
 void init_cycfg_pins(void)
 {
+	Cy_GPIO_Pin_Init(CYBSP_WCO_IN_PORT, CYBSP_WCO_IN_PIN, &CYBSP_WCO_IN_config);
+#if defined (CY_USING_HAL)
+	cyhal_hwmgr_reserve(&CYBSP_WCO_IN_obj);
+#endif //defined (CY_USING_HAL)
+
+	Cy_GPIO_Pin_Init(CYBSP_WCO_OUT_PORT, CYBSP_WCO_OUT_PIN, &CYBSP_WCO_OUT_config);
+#if defined (CY_USING_HAL)
+	cyhal_hwmgr_reserve(&CYBSP_WCO_OUT_obj);
+#endif //defined (CY_USING_HAL)
+
 	Cy_GPIO_Pin_Init(CYBSP_SWDIO_PORT, CYBSP_SWDIO_PIN, &CYBSP_SWDIO_config);
 #if defined (CY_USING_HAL)
 	cyhal_hwmgr_reserve(&CYBSP_SWDIO_obj);

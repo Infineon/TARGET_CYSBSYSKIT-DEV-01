@@ -19,7 +19,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 * A user LED, a user button, and a reset button
 * Battery connector, charging IC, and charging indicator LED
 * One KitProg3 mode button, one KitProg3 status LED, and one KitProg3 power LED
-* OPTIGA™ Trust M advanced security controller for secure data storage
+* OPTIGA Trust M advanced security controller for secure data storage
 * Thermistor for sensing the ambient temperature
 * 16KB of Emulated EEPROM
 * Feather compatible pin header
@@ -73,11 +73,11 @@ See the [BSP API Reference Manual][api] for the complete list of the provided in
 * [CYSBSYSKIT-DEV-01 BSP API Reference Manual][api]
 * [CYSBSYSKIT-DEV-01 Documentation](http://www.cypress.com/CYSBSYSKIT-DEV-01)
 * [Cypress Semiconductor, an Infineon Technologies Company](http://www.cypress.com)
-* [Cypress Semiconductor GitHub](https://github.com/cypresssemiconductorco)
+* [Infineon GitHub](https://github.com/infineon)
 * [ModusToolbox](https://www.cypress.com/products/modustoolbox-software-environment)
 
-[api]: https://cypresssemiconductorco.github.io/TARGET_CYSBSYSKIT-DEV-01/html/modules.html
-[settings]: https://cypresssemiconductorco.github.io/TARGET_CYSBSYSKIT-DEV-01/html/md_bsp_settings.html
+[api]: https://infineon.github.io/TARGET_CYSBSYSKIT-DEV-01/html/modules.html
+[settings]: https://infineon.github.io/TARGET_CYSBSYSKIT-DEV-01/html/md_bsp_settings.html
 
 ---
-© Cypress Semiconductor Corporation, 2019-2021.
+© Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation, 2019-2021.

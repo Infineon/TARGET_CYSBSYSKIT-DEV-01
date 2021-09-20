@@ -5,9 +5,9 @@
 * Connectivity BT configuration
 * This file was automatically generated and should not be modified.
 * Tools Package 2.2.0.2801
-* mtb-pdl-cat1 2.0.0.6211
-* personalities 3.0.0.0
-* udd 3.0.0.562
+* latest-v2.X 2.2.1.9614
+* personalities 4.0.0.0
+* udd 3.0.0.1125
 *
 ********************************************************************************
 * Copyright 2021 Cypress Semiconductor Corporation
@@ -30,11 +30,20 @@
 #define CYCFG_CONNECTIVITY_BT_H
 
 #include "cycfg_notices.h"
+#include "cycfg_pins.h"
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
 #define bt_0_power_0_ENABLED 1U
+#define CYCFG_BT_LP_ENABLED (1u)
+#define CYCFG_BT_WAKE_EVENT_ACTIVE_LOW (0)
+#define CYCFG_BT_WAKE_EVENT_ACTIVE_HIGH (1)
+#define CYCFG_BT_HOST_WAKE_GPIO CYBSP_BT_HOST_WAKE
+#define CYCFG_BT_HOST_WAKE_IRQ_EVENT CYBT_WAKE_ACTIVE_LOW
+#define CYCFG_BT_DEV_WAKE_GPIO CYBSP_BT_DEVICE_WAKE
+#define CYCFG_BT_DEV_WAKE_POLARITY CYBT_WAKE_ACTIVE_LOW
 
 
 #if defined(__cplusplus)

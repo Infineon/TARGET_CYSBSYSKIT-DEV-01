@@ -5,9 +5,9 @@
 * System configuration
 * This file was automatically generated and should not be modified.
 * Tools Package 2.2.0.2801
-* mtb-pdl-cat1 2.0.0.6211
-* personalities 3.0.0.0
-* udd 3.0.0.562
+* latest-v2.X 2.2.1.9614
+* personalities 4.0.0.0
+* udd 3.0.0.1125
 *
 ********************************************************************************
 * Copyright 2021 Cypress Semiconductor Corporation
@@ -103,6 +103,7 @@
 #define CY_CFG_PWR_LDO_VOLTAGE CY_SYSPM_LDO_VOLTAGE_LP
 #define CY_CFG_PWR_USING_ULP 0
 #define CY_CFG_PWR_REGULATOR_MODE_MIN false
+#define CY_CFG_PWR_BKP_ERROR 6
 
 #if defined (CY_DEVICE_SECURE) && (CY_CPU_CORTEX_M4)
 	static cy_stc_pra_system_config_t srss_0_clock_0_secureConfig;
@@ -181,13 +182,13 @@
 	};
 #endif //((!CY_CPU_CORTEX_M4) || (!defined(CY_DEVICE_SECURE)))
 
-__WEAK void cycfg_ClockStartupError(uint32_t error)
+__WEAK void __NO_RETURN cycfg_ClockStartupError(uint32_t error)
 {
     (void)error; /* Suppress the compiler warning */
     while(1);
 }
 #if defined (CY_DEVICE_SECURE) && (CY_CPU_CORTEX_M4)
-	__STATIC_INLINE void init_cycfg_secure_struct(cy_stc_pra_system_config_t * secure_config)
+	void init_cycfg_secure_struct(cy_stc_pra_system_config_t * secure_config)
 	{
 	    #ifdef CY_CFG_PWR_ENABLED
 	        secure_config->powerEnable = CY_CFG_PWR_ENABLED;
@@ -790,36 +791,49 @@ __WEAK void cycfg_ClockStartupError(uint32_t error)
 	__STATIC_INLINE void init_cycfg_power(void)
 	{
 	    /* Reset the Backup domain on POR, XRES, BOD only if Backup domain is supplied by VDDD */
-	    #if (CY_CFG_PWR_VBACKUP_USING_VDDD)
-	        #ifdef CY_CFG_SYSCLK_ILO_ENABLED
-	            if (0u == Cy_SysLib_GetResetReason() /* POR, XRES, or BOD */)
-	            {
-	                Cy_SysLib_ResetBackupDomain();
-	                Cy_SysClk_IloDisable();
-	                Cy_SysClk_IloInit();
-	            }
-	        #endif /* CY_CFG_SYSCLK_ILO_ENABLED */
-	    #endif /* CY_CFG_PWR_VBACKUP_USING_VDDD */
-	    /* Configure core regulator */
-	    #if !((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE)))
-	        #if CY_CFG_PWR_USING_LDO
-	            Cy_SysPm_LdoSetVoltage(CY_SYSPM_LDO_VOLTAGE_LP);
-	        #else
-	            Cy_SysPm_BuckEnable(CY_SYSPM_BUCK_OUT1_VOLTAGE_LP);
-	        #endif /* CY_CFG_PWR_USING_LDO */
-	        #if CY_CFG_PWR_REGULATOR_MODE_MIN
-	            Cy_SysPm_SystemSetMinRegulatorCurrent();
-	        #else
-	            Cy_SysPm_SystemSetNormalRegulatorCurrent();
-	        #endif /* CY_CFG_PWR_REGULATOR_MODE_MIN */
-	    #endif /* !((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE))) */
-	    /* Configure PMIC */
-	    Cy_SysPm_UnlockPmic();
-	    #if CY_CFG_PWR_USING_PMIC
-	        Cy_SysPm_PmicEnableOutput();
-	    #else
-	        Cy_SysPm_PmicDisableOutput();
-	    #endif /* CY_CFG_PWR_USING_PMIC */
+	     #if (CY_CFG_PWR_VBACKUP_USING_VDDD)
+	         #ifdef CY_CFG_SYSCLK_ILO_ENABLED
+	             if (0u == Cy_SysLib_GetResetReason() /* POR, XRES, or BOD */)
+	             {
+	             #if CY_CFG_SYSCLK_WCO_ENABLED
+	                 uint32_t wcoTrim = Cy_SysLib_GetWcoTrim();
+	                 if (CY_SYSLIB_SUCCESS != Cy_SysLib_ResetBackupDomain())
+	                 {
+	                     Cy_SysLib_DelayUs(1U);
+	                     if (CY_SYSLIB_SUCCESS != Cy_SysLib_GetResetStatus())
+	                     {
+	                         cycfg_ClockStartupError(CY_CFG_PWR_BKP_ERROR);
+	                     }
+	                 }
+	                 Cy_SysLib_SetWcoTrim(wcoTrim);
+	             #else /* CY_CFG_SYSCLK_WCO_ENABLED */
+	                 (void) Cy_SysLib_ResetBackupDomain();
+	             #endif /* CY_CFG_SYSCLK_WCO_ENABLED */
+	                 Cy_SysClk_IloDisable();
+	                 Cy_SysClk_IloInit();
+	             }
+	         #endif /* CY_CFG_SYSCLK_ILO_ENABLED */
+	     #endif /* CY_CFG_PWR_VBACKUP_USING_VDDD */
+	     /* Configure core regulator */
+	     #if !((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE)))
+	         #if CY_CFG_PWR_USING_LDO
+	             Cy_SysPm_LdoSetVoltage(CY_SYSPM_LDO_VOLTAGE_LP);
+	         #else
+	             Cy_SysPm_BuckEnable(CY_SYSPM_BUCK_OUT1_VOLTAGE_LP);
+	         #endif /* CY_CFG_PWR_USING_LDO */
+	         #if CY_CFG_PWR_REGULATOR_MODE_MIN
+	             Cy_SysPm_SystemSetMinRegulatorCurrent();
+	         #else
+	             Cy_SysPm_SystemSetNormalRegulatorCurrent();
+	         #endif /* CY_CFG_PWR_REGULATOR_MODE_MIN */
+	     #endif /* !((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE))) */
+	     /* Configure PMIC */
+	     Cy_SysPm_UnlockPmic();
+	     #if CY_CFG_PWR_USING_PMIC
+	         Cy_SysPm_PmicEnableOutput();
+	     #else
+	         Cy_SysPm_PmicDisableOutput();
+	     #endif /* CY_CFG_PWR_USING_PMIC */
 	}
 #endif //((!CY_CPU_CORTEX_M4) || (!defined(CY_DEVICE_SECURE)))
 
@@ -829,23 +843,23 @@ void init_cycfg_system(void)
 	#if ((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE)))
 	    cy_en_pra_status_t configStatus;
 	    init_cycfg_secure_struct(&srss_0_clock_0_secureConfig);
-	    #if ((CY_CFG_SYSCLK_CLKPATH0_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 0UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH0_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH0_SOURCE_NUM <= 5UL))  && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 0UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
-	    #if ((CY_CFG_SYSCLK_CLKPATH1_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 1UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH1_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH1_SOURCE_NUM <= 5UL)) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 1UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
-	    #if ((CY_CFG_SYSCLK_CLKPATH2_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 2UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH2_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH2_SOURCE_NUM <= 5UL)) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 2UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
-	    #if ((CY_CFG_SYSCLK_CLKPATH3_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 3UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH3_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH3_SOURCE_NUM <= 5UL)) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 3UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
-	    #if ((CY_CFG_SYSCLK_CLKPATH4_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 4UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH4_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH4_SOURCE_NUM <= 5UL)) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 4UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
-	    #if ((CY_CFG_SYSCLK_CLKPATH5_SOURCE_NUM != 0UL) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 5UL))
-	        #error Configuration Error : ECO, WCO, ALTHF, EXTCLK, ILO, PILO cannot drive HF0.
+	    #if (((CY_CFG_SYSCLK_CLKPATH5_SOURCE_NUM >= 3UL) && (CY_CFG_SYSCLK_CLKPATH5_SOURCE_NUM <= 5UL)) && (CY_CFG_SYSCLK_CLKHF0_CLKPATH_NUM == 5UL))
+	        #error Configuration Error : ALTHF, ILO, PILO cannot drive HF0.
 	    #endif
 	
 	    configStatus = CY_PRA_FUNCTION_CALL_RETURN_PARAM(CY_PRA_MSG_TYPE_SYS_CFG_FUNC,
@@ -1123,6 +1137,10 @@ void init_cycfg_system(void)
 	
 	    #ifndef CY_CFG_SYSCLK_IMO_ENABLED
 	        #error the IMO must be enabled for proper chip operation
+	    #endif
+	
+	    #ifndef CY_CFG_SYSCLK_CLKHF0_ENABLED
+	        #error the CLKHF0 must be enabled for proper chip operation
 	    #endif
 	
 	#endif /* ((CY_CPU_CORTEX_M4) && (defined(CY_DEVICE_SECURE))) */

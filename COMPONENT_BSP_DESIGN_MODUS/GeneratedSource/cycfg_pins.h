@@ -5,9 +5,9 @@
 * Pin configuration
 * This file was automatically generated and should not be modified.
 * Tools Package 2.2.0.2801
-* mtb-pdl-cat1 2.0.0.6211
-* personalities 3.0.0.0
-* udd 3.0.0.562
+* latest-v2.X 2.2.1.9614
+* personalities 4.0.0.0
+* udd 3.0.0.1125
 *
 ********************************************************************************
 * Copyright 2021 Cypress Semiconductor Corporation
@@ -290,9 +290,14 @@ extern "C" {
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_I2C_SCL_OPTIGA (P8_0)
+	#define CYBSP_TRUSTM_I2C_SCL CYBSP_I2C_SCL_OPTIGA
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_I2C_SDA_OPTIGA (P8_1)
+	#define CYBSP_TRUSTM_I2C_SDA CYBSP_I2C_SDA_OPTIGA
+#endif //defined (CY_USING_HAL)
+#if defined (CY_USING_HAL)
+	#define CYBSP_TRUSTM_RST (P8_2)
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_GPIO5 (P8_4)

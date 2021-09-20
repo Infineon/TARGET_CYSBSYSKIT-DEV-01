@@ -208,9 +208,14 @@
                 </Block>
                 <Block location="ioss[0].port[8].pin[0]">
                     <Alias value="CYBSP_I2C_SCL_OPTIGA"/>
+                    <Alias value="CYBSP_TRUSTM_I2C_SCL"/>
                 </Block>
                 <Block location="ioss[0].port[8].pin[1]">
                     <Alias value="CYBSP_I2C_SDA_OPTIGA"/>
+                    <Alias value="CYBSP_TRUSTM_I2C_SDA"/>
+                </Block>
+                <Block location="ioss[0].port[8].pin[2]">
+                    <Alias value="CYBSP_TRUSTM_RST"/>
                 </Block>
                 <Block location="ioss[0].port[8].pin[4]">
                     <Alias value="CYBSP_GPIO5"/>

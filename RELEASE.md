@@ -15,6 +15,9 @@ The CYSBSYSKIT-DEV-01 library includes the following:
 * API documentation
 
 ### What Changed?
+#### v3.1.0
+* Added optional macro CYBSP_CUSTOM_SYSCLK_PM_CALLBACK to allow overriding default clock power management behavior.
+* Enable AIROC BLE stack for MCUs with an integrated BLE radio
 #### v3.0.0
 * Updated to HAL dependency to v2.0.0
 * Updated CAPSENSE™ dependency to v3.0.0

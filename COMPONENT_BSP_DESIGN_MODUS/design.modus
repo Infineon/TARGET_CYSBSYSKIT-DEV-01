@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Design version="12" xmlns="http://cypress.com/xsd/cydesignfile_v3">
-    <ToolInfo version="2.4.0.5721"/>
+    <ToolInfo version="2.4.0.5972"/>
     <Devices>
         <Device mpn="CY8C624AFNI-S2D43">
             <BlockConfig>
@@ -30,10 +30,6 @@
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
-                        <Param id="sioInputBuffer" value="false"/>
-                        <Param id="sioTrip" value="CY_SIO_VTRIP_CMOS"/>
-                        <Param id="sioRef" value="CY_SIO_VREF_PINREF"/>
-                        <Param id="sioVoltage" value="CY_SIO_VOH_1_00"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
@@ -383,7 +379,6 @@
             <BlockConfig>
                 <Block location="bt[0].power[0]">
                     <Personality template="connectivity_bt" version="1.0">
-                        <Param id="btHostWake" value="false"/>
                         <Param id="hostWakePin" value=""/>
                         <Param id="hostWakeIrqEvent" value="CYCFG_BT_WAKE_EVENT_ACTIVE_LOW"/>
                         <Param id="devWakePin" value=""/>

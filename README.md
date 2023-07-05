@@ -13,6 +13,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 ### Kit Features:
 
 * CYSBSYS-RP01 module
+* Free application processor (150-MHz Arm® Cortex®-M4) and secondary processor (100-MHz Arm® Cortex®-M0+)
 * Support of up to 2MB Flash and 1MB SRAM
 * 512-Mbit external Quad SPI NOR Flash that provides a fast, expandable memory for data and code
 * KitProg3 on-board SWD programmer/debugger, USB-UART, and USB-I2C bridge functionality
@@ -21,11 +22,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 * One KitProg3 mode button, one KitProg3 status LED, and one KitProg3 power LED
 * OPTIGA Trust M advanced security controller for secure data storage
 * Thermistor for sensing the ambient temperature
-* 16KB of Emulated EEPROM
 * Feather compatible pin header
-* Dedicated SDHC to interface with WICED wireless devices.
-* Delivers dual-cores, with a 150-MHz Arm Cortex-M4 as the primary application processor and a 100-MHz Arm Cortex-M0+ as the secondary processor for low-power operations.
-* Supports Full-Speed USB, a Quad-SPI interface, 13 serial communication blocks, 7 programmable analog blocks, and 56 programmable digital blocks.
 
 ### Kit Contents:
 
